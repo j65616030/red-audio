@@ -4,6 +4,7 @@ import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
 import pyaudio
 import wave
+import librosa
 
 # Definir la arquitectura del modelo
 class AudioModel(nn.Module):
@@ -68,15 +69,19 @@ def procesar_audio_con_modelo(audio):
     salida = modelo(audio)
     return salida
 
-# Grabar audio en streaming
-grabar_audio_streaming()
+while True:
+    # Grabar audio en streaming
+    grabar_audio_streaming()
 
-# Cargar el audio grabado
-audio_grabado = cargar_audio_grabado()
+    # Cargar el audio grabado
+    audio_grabado = cargar_audio_grabado()
 
-# Procesar el audio con el modelo
-salida = procesar_audio_con_modelo(audio_grabado)
+    # Procesar el audio con el modelo
+    salida = procesar_audio_con_modelo(audio_grabado)
 
-# Reproducir la salida del modelo
-salida_reproducida = salida.squeeze(0).squeeze(0).numpy()
-librosa.output.write_wav("salida.wav", salida_reproducida, 44100)
+    # Reproducir la salida del modelo
+    salida_reproducida = salida.squeeze(0).squeeze(0).numpy()
+    librosa.output.write_wav("salida.wav", salida_reproducida, 44100)
+
+    # Reproducir el archivo de audio generado
+    os.system("aplay salida.wav")
